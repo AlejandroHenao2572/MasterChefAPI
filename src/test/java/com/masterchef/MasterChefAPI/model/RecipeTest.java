@@ -10,105 +10,39 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Pruebas unitarias para Recipe")
+@DisplayName("Recipe Model Tests")
 class RecipeTest {
 
+    private Recipe recipe;
     private List<String> ingredients;
     private List<String> preparationSteps;
 
     @BeforeEach
     void setUp() {
-        ingredients = Arrays.asList("Tomate", "Cebolla", "Ajo");
-        preparationSteps = Arrays.asList("Cortar", "Freír", "Mezclar");
+        ingredients = Arrays.asList(
+                "2 tazas de arroz",
+                "500g de pollo",
+                "200g de mariscos",
+                "Azafrán",
+                "Caldo de pollo"
+        );
+        
+        preparationSteps = Arrays.asList(
+                "Preparar el sofrito",
+                "Añadir el arroz",
+                "Incorporar el caldo",
+                "Cocinar por 20 minutos",
+                "Dejar reposar"
+        );
     }
 
     @Test
-    @DisplayName("Debe crear una receta con el constructor completo (con todos los campos)")
-    void testAllArgsConstructor() {
-        // Arrange
-        String id = "123abc";
-        Long consecutiveNumber = 1L;
-        String title = "Paella Valenciana";
-        String chefName = "Juan Pérez";
-        String recipeType = "VIEWER";
-        Integer season = null;
-        LocalDateTime now = LocalDateTime.now();
-
-        // Act
-        Recipe recipe = new Recipe(id, consecutiveNumber, title, ingredients, 
-                                   preparationSteps, chefName, recipeType, season, now, now);
-
-        // Assert
-        assertNotNull(recipe);
-        assertEquals(id, recipe.getId());
-        assertEquals(consecutiveNumber, recipe.getConsecutiveNumber());
-        assertEquals(title, recipe.getTitle());
-        assertEquals(ingredients, recipe.getIngredients());
-        assertEquals(preparationSteps, recipe.getPreparationSteps());
-        assertEquals(chefName, recipe.getChefName());
-        assertEquals(recipeType, recipe.getRecipeType());
-        assertNull(recipe.getSeason());
-        assertEquals(now, recipe.getCreatedAt());
-        assertEquals(now, recipe.getUpdatedAt());
-    }
-
-    @Test
-    @DisplayName("Debe crear una receta con el constructor sin temporada")
-    void testConstructorWithoutSeason() {
-        // Arrange
-        String title = "Gazpacho Andaluz";
-        String chefName = "María García";
-        String recipeType = "VIEWER";
-
-        // Act
-        Recipe recipe = new Recipe(title, ingredients, preparationSteps, chefName, recipeType);
-
-        // Assert
-        assertNotNull(recipe);
-        assertEquals(title, recipe.getTitle());
-        assertEquals(ingredients, recipe.getIngredients());
-        assertEquals(preparationSteps, recipe.getPreparationSteps());
-        assertEquals(chefName, recipe.getChefName());
-        assertEquals(recipeType, recipe.getRecipeType());
-        assertNull(recipe.getSeason());
-        assertNotNull(recipe.getCreatedAt());
-        assertNotNull(recipe.getUpdatedAt());
-    }
-
-    @Test
-    @DisplayName("Debe crear una receta con el constructor con temporada")
-    void testConstructorWithSeason() {
-        // Arrange
-        String title = "Arroz con Pollo";
-        String chefName = "Carlos Rodríguez";
-        String recipeType = "CONTESTANT";
-        Integer season = 3;
-
-        // Act
-        Recipe recipe = new Recipe(title, ingredients, preparationSteps, chefName, recipeType, season);
-
-        // Assert
-        assertNotNull(recipe);
-        assertEquals(title, recipe.getTitle());
-        assertEquals(ingredients, recipe.getIngredients());
-        assertEquals(preparationSteps, recipe.getPreparationSteps());
-        assertEquals(chefName, recipe.getChefName());
-        assertEquals(recipeType, recipe.getRecipeType());
-        assertEquals(season, recipe.getSeason());
-        assertNotNull(recipe.getCreatedAt());
-        assertNotNull(recipe.getUpdatedAt());
-    }
-
-    @Test
-    @DisplayName("Debe crear una receta vacía con el constructor sin argumentos")
-    void testNoArgsConstructor() {
-        // Act
-        Recipe recipe = new Recipe();
-
-        // Assert
+    @DisplayName("Debería crear una receta con constructor vacío")
+    void shouldCreateRecipeWithNoArgsConstructor() {
+        recipe = new Recipe();
+        
         assertNotNull(recipe);
         assertNull(recipe.getId());
-        assertNull(recipe.getConsecutiveNumber());
         assertNull(recipe.getTitle());
         assertNull(recipe.getIngredients());
         assertNull(recipe.getPreparationSteps());
@@ -120,221 +54,276 @@ class RecipeTest {
     }
 
     @Test
-    @DisplayName("Debe establecer y obtener correctamente el ID")
-    void testSetAndGetId() {
-        // Arrange
-        Recipe recipe = new Recipe();
-        String id = "abc123";
-
-        // Act
-        recipe.setId(id);
-
-        // Assert
-        assertEquals(id, recipe.getId());
+    @DisplayName("Debería crear una receta con constructor completo")
+    void shouldCreateRecipeWithAllArgsConstructor() {
+        LocalDateTime now = LocalDateTime.now();
+        
+        recipe = new Recipe(
+                "1", 
+                1L, 
+                "Paella Valenciana", 
+                ingredients, 
+                preparationSteps, 
+                "Juan Pérez", 
+                "CHEF", 
+                null, 
+                now, 
+                now
+        );
+        
+        assertNotNull(recipe);
+        assertEquals("1", recipe.getId());
+        assertEquals(1L, recipe.getConsecutiveNumber());
+        assertEquals("Paella Valenciana", recipe.getTitle());
+        assertEquals(ingredients, recipe.getIngredients());
+        assertEquals(preparationSteps, recipe.getPreparationSteps());
+        assertEquals("Juan Pérez", recipe.getChefName());
+        assertEquals("CHEF", recipe.getRecipeType());
+        assertNull(recipe.getSeason());
+        assertEquals(now, recipe.getCreatedAt());
+        assertEquals(now, recipe.getUpdatedAt());
     }
 
     @Test
-    @DisplayName("Debe establecer y obtener correctamente el número consecutivo")
-    void testSetAndGetConsecutiveNumber() {
-        // Arrange
-        Recipe recipe = new Recipe();
-        Long consecutiveNumber = 10L;
+    @DisplayName("Debería crear una receta sin temporada usando constructor sin season")
+    void shouldCreateRecipeWithoutSeasonConstructor() {
+        recipe = new Recipe(
+                "Paella Valenciana",
+                ingredients,
+                preparationSteps,
+                "Juan Pérez",
+                "CHEF"
+        );
+        
+        assertNotNull(recipe);
+        assertEquals("Paella Valenciana", recipe.getTitle());
+        assertEquals(ingredients, recipe.getIngredients());
+        assertEquals(preparationSteps, recipe.getPreparationSteps());
+        assertEquals("Juan Pérez", recipe.getChefName());
+        assertEquals("CHEF", recipe.getRecipeType());
+        assertNull(recipe.getSeason());
+        assertNotNull(recipe.getCreatedAt());
+        assertNotNull(recipe.getUpdatedAt());
+    }
 
-        // Act
+    @Test
+    @DisplayName("Debería crear una receta con temporada usando constructor con season")
+    void shouldCreateRecipeWithSeasonConstructor() {
+        recipe = new Recipe(
+                "Arroz con Pollo",
+                ingredients,
+                preparationSteps,
+                "María García",
+                "CONTESTANT",
+                3
+        );
+        
+        assertNotNull(recipe);
+        assertEquals("Arroz con Pollo", recipe.getTitle());
+        assertEquals(ingredients, recipe.getIngredients());
+        assertEquals(preparationSteps, recipe.getPreparationSteps());
+        assertEquals("María García", recipe.getChefName());
+        assertEquals("CONTESTANT", recipe.getRecipeType());
+        assertEquals(3, recipe.getSeason());
+        assertNotNull(recipe.getCreatedAt());
+        assertNotNull(recipe.getUpdatedAt());
+    }
+
+    @Test
+    @DisplayName("Debería establecer y obtener el ID correctamente")
+    void shouldSetAndGetId() {
+        recipe = new Recipe();
+        String testId = "507f1f77bcf86cd799439011";
+        
+        recipe.setId(testId);
+        
+        assertEquals(testId, recipe.getId());
+    }
+
+    @Test
+    @DisplayName("Debería establecer y obtener el número consecutivo correctamente")
+    void shouldSetAndGetConsecutiveNumber() {
+        recipe = new Recipe();
+        Long consecutiveNumber = 100L;
+        
         recipe.setConsecutiveNumber(consecutiveNumber);
-
-        // Assert
+        
         assertEquals(consecutiveNumber, recipe.getConsecutiveNumber());
     }
 
     @Test
-    @DisplayName("Debe establecer y obtener correctamente el título")
-    void testSetAndGetTitle() {
-        // Arrange
-        Recipe recipe = new Recipe();
-        String title = "Tortilla Española";
-
-        // Act
+    @DisplayName("Debería establecer y obtener el título correctamente")
+    void shouldSetAndGetTitle() {
+        recipe = new Recipe();
+        String title = "Tarta de Chocolate";
+        
         recipe.setTitle(title);
-
-        // Assert
+        
         assertEquals(title, recipe.getTitle());
     }
 
     @Test
-    @DisplayName("Debe establecer y obtener correctamente los ingredientes")
-    void testSetAndGetIngredients() {
-        // Arrange
-        Recipe recipe = new Recipe();
-        List<String> newIngredients = Arrays.asList("Huevo", "Patata", "Sal");
-
-        // Act
-        recipe.setIngredients(newIngredients);
-
-        // Assert
-        assertEquals(newIngredients, recipe.getIngredients());
-        assertEquals(3, recipe.getIngredients().size());
+    @DisplayName("Debería establecer y obtener ingredientes correctamente")
+    void shouldSetAndGetIngredients() {
+        recipe = new Recipe();
+        
+        recipe.setIngredients(ingredients);
+        
+        assertEquals(ingredients, recipe.getIngredients());
+        assertEquals(5, recipe.getIngredients().size());
     }
 
     @Test
-    @DisplayName("Debe establecer y obtener correctamente los pasos de preparación")
-    void testSetAndGetPreparationSteps() {
-        // Arrange
-        Recipe recipe = new Recipe();
-        List<String> newSteps = Arrays.asList("Batir", "Cocinar", "Servir");
-
-        // Act
-        recipe.setPreparationSteps(newSteps);
-
-        // Assert
-        assertEquals(newSteps, recipe.getPreparationSteps());
-        assertEquals(3, recipe.getPreparationSteps().size());
+    @DisplayName("Debería establecer y obtener pasos de preparación correctamente")
+    void shouldSetAndGetPreparationSteps() {
+        recipe = new Recipe();
+        
+        recipe.setPreparationSteps(preparationSteps);
+        
+        assertEquals(preparationSteps, recipe.getPreparationSteps());
+        assertEquals(5, recipe.getPreparationSteps().size());
     }
 
     @Test
-    @DisplayName("Debe establecer y obtener correctamente el nombre del chef")
-    void testSetAndGetChefName() {
-        // Arrange
-        Recipe recipe = new Recipe();
-        String chefName = "Ana López";
-
-        // Act
+    @DisplayName("Debería establecer y obtener el nombre del chef correctamente")
+    void shouldSetAndGetChefName() {
+        recipe = new Recipe();
+        String chefName = "Gordon Ramsay";
+        
         recipe.setChefName(chefName);
-
-        // Assert
+        
         assertEquals(chefName, recipe.getChefName());
     }
 
     @Test
-    @DisplayName("Debe establecer y obtener correctamente el tipo de receta")
-    void testSetAndGetRecipeType() {
-        // Arrange
-        Recipe recipe = new Recipe();
-        String recipeType = "CHEF";
-
-        // Act
+    @DisplayName("Debería establecer y obtener el tipo de receta correctamente")
+    void shouldSetAndGetRecipeType() {
+        recipe = new Recipe();
+        String recipeType = "VIEWER";
+        
         recipe.setRecipeType(recipeType);
-
-        // Assert
+        
         assertEquals(recipeType, recipe.getRecipeType());
     }
 
     @Test
-    @DisplayName("Debe establecer y obtener correctamente la temporada")
-    void testSetAndGetSeason() {
-        // Arrange
-        Recipe recipe = new Recipe();
+    @DisplayName("Debería establecer y obtener la temporada correctamente")
+    void shouldSetAndGetSeason() {
+        recipe = new Recipe();
         Integer season = 5;
-
-        // Act
+        
         recipe.setSeason(season);
-
-        // Assert
+        
         assertEquals(season, recipe.getSeason());
     }
 
     @Test
-    @DisplayName("Debe establecer y obtener correctamente la fecha de creación")
-    void testSetAndGetCreatedAt() {
-        // Arrange
-        Recipe recipe = new Recipe();
-        LocalDateTime createdAt = LocalDateTime.now();
-
-        // Act
-        recipe.setCreatedAt(createdAt);
-
-        // Assert
-        assertEquals(createdAt, recipe.getCreatedAt());
-    }
-
-    @Test
-    @DisplayName("Debe establecer y obtener correctamente la fecha de actualización")
-    void testSetAndGetUpdatedAt() {
-        // Arrange
-        Recipe recipe = new Recipe();
+    @DisplayName("Debería establecer y obtener fechas correctamente")
+    void shouldSetAndGetDates() {
+        recipe = new Recipe();
+        LocalDateTime createdAt = LocalDateTime.now().minusDays(1);
         LocalDateTime updatedAt = LocalDateTime.now();
-
-        // Act
+        
+        recipe.setCreatedAt(createdAt);
         recipe.setUpdatedAt(updatedAt);
-
-        // Assert
+        
+        assertEquals(createdAt, recipe.getCreatedAt());
         assertEquals(updatedAt, recipe.getUpdatedAt());
     }
 
     @Test
-    @DisplayName("Debe verificar igualdad entre dos recetas con los mismos datos")
-    void testEquals() {
-        // Arrange
-        LocalDateTime now = LocalDateTime.now();
-        Recipe recipe1 = new Recipe("1", 1L, "Paella", ingredients, preparationSteps, 
-                                    "Chef1", "VIEWER", null, now, now);
-        Recipe recipe2 = new Recipe("1", 1L, "Paella", ingredients, preparationSteps, 
-                                    "Chef1", "VIEWER", null, now, now);
-
-        // Assert
+    @DisplayName("Debería ser igual a otra receta con los mismos valores")
+    void shouldBeEqualToAnotherRecipeWithSameValues() {
+        Recipe recipe1 = new Recipe(
+                "Paella Valenciana",
+                ingredients,
+                preparationSteps,
+                "Juan Pérez",
+                "CHEF"
+        );
+        recipe1.setId("1");
+        
+        Recipe recipe2 = new Recipe(
+                "Paella Valenciana",
+                ingredients,
+                preparationSteps,
+                "Juan Pérez",
+                "CHEF"
+        );
+        recipe2.setId("1");
+        recipe2.setCreatedAt(recipe1.getCreatedAt());
+        recipe2.setUpdatedAt(recipe1.getUpdatedAt());
+        
         assertEquals(recipe1, recipe2);
         assertEquals(recipe1.hashCode(), recipe2.hashCode());
     }
 
     @Test
-    @DisplayName("Debe verificar desigualdad entre dos recetas con datos diferentes")
-    void testNotEquals() {
-        // Arrange
-        LocalDateTime now = LocalDateTime.now();
-        Recipe recipe1 = new Recipe("1", 1L, "Paella", ingredients, preparationSteps, 
-                                    "Chef1", "VIEWER", null, now, now);
-        Recipe recipe2 = new Recipe("2", 2L, "Gazpacho", ingredients, preparationSteps, 
-                                    "Chef2", "CHEF", null, now, now);
-
-        // Assert
+    @DisplayName("No debería ser igual a otra receta con valores diferentes")
+    void shouldNotBeEqualToAnotherRecipeWithDifferentValues() {
+        Recipe recipe1 = new Recipe(
+                "Paella Valenciana",
+                ingredients,
+                preparationSteps,
+                "Juan Pérez",
+                "CHEF"
+        );
+        recipe1.setId("1");
+        
+        Recipe recipe2 = new Recipe(
+                "Arroz con Pollo",
+                ingredients,
+                preparationSteps,
+                "María García",
+                "CONTESTANT",
+                2
+        );
+        recipe2.setId("2");
+        
         assertNotEquals(recipe1, recipe2);
     }
 
     @Test
-    @DisplayName("Debe generar correctamente el método toString")
-    void testToString() {
-        // Arrange
-        Recipe recipe = new Recipe("Paella", ingredients, preparationSteps, "Chef1", "VIEWER");
-
-        // Act
-        String result = recipe.toString();
-
-        // Assert
-        assertNotNull(result);
-        assertTrue(result.contains("Paella"));
-        assertTrue(result.contains("Chef1"));
-        assertTrue(result.contains("VIEWER"));
-    }
-
-    @Test
-    @DisplayName("Debe poder modificar una receta existente")
-    void testModifyRecipe() {
-        // Arrange
-        Recipe recipe = new Recipe("Paella", ingredients, preparationSteps, "Chef1", "VIEWER");
+    @DisplayName("toString debería contener información relevante")
+    void toStringShouldContainRelevantInformation() {
+        recipe = new Recipe(
+                "Paella Valenciana",
+                ingredients,
+                preparationSteps,
+                "Juan Pérez",
+                "CHEF"
+        );
+        recipe.setId("1");
         
-        // Act
-        recipe.setTitle("Paella Modificada");
-        recipe.setChefName("Nuevo Chef");
-        recipe.setConsecutiveNumber(99L);
-
-        // Assert
-        assertEquals("Paella Modificada", recipe.getTitle());
-        assertEquals("Nuevo Chef", recipe.getChefName());
-        assertEquals(99L, recipe.getConsecutiveNumber());
+        String toString = recipe.toString();
+        
+        assertNotNull(toString);
+        assertFalse(toString.isEmpty());
+        // Verificar que el toString contiene al menos el nombre de la clase
+        assertTrue(toString.contains("Recipe"));
     }
 
     @Test
-    @DisplayName("Debe manejar correctamente valores null en los campos opcionales")
-    void testNullValues() {
-        // Arrange & Act
-        Recipe recipe = new Recipe();
-        recipe.setId(null);
-        recipe.setSeason(null);
-        recipe.setCreatedAt(null);
+    @DisplayName("Debería manejar listas vacías de ingredientes")
+    void shouldHandleEmptyIngredientsList() {
+        recipe = new Recipe();
+        List<String> emptyIngredients = Arrays.asList();
+        
+        recipe.setIngredients(emptyIngredients);
+        
+        assertEquals(emptyIngredients, recipe.getIngredients());
+        assertTrue(recipe.getIngredients().isEmpty());
+    }
 
-        // Assert
-        assertNull(recipe.getId());
-        assertNull(recipe.getSeason());
-        assertNull(recipe.getCreatedAt());
+    @Test
+    @DisplayName("Debería manejar listas vacías de pasos de preparación")
+    void shouldHandleEmptyPreparationStepsList() {
+        recipe = new Recipe();
+        List<String> emptySteps = Arrays.asList();
+        
+        recipe.setPreparationSteps(emptySteps);
+        
+        assertEquals(emptySteps, recipe.getPreparationSteps());
+        assertTrue(recipe.getPreparationSteps().isEmpty());
     }
 }

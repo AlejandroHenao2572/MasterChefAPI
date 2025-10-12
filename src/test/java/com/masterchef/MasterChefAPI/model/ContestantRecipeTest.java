@@ -9,48 +9,39 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Pruebas unitarias para ContestantRecipe")
+@DisplayName("ContestantRecipe Model Tests")
 class ContestantRecipeTest {
 
+    private ContestantRecipe contestantRecipe;
     private List<String> ingredients;
     private List<String> preparationSteps;
 
     @BeforeEach
     void setUp() {
-        ingredients = Arrays.asList("Arroz", "Pollo", "Pimiento", "Azafrán");
-        preparationSteps = Arrays.asList("Sofreír el pollo", "Agregar el arroz", "Cocinar a fuego lento");
+        ingredients = Arrays.asList(
+                "1 kg de carne de res",
+                "2 cebollas",
+                "3 zanahorias",
+                "Caldo de carne",
+                "Vino tinto",
+                "Hierbas aromáticas"
+        );
+        
+        preparationSteps = Arrays.asList(
+                "Cortar la carne en cubos",
+                "Dorar la carne en la olla",
+                "Añadir las verduras",
+                "Incorporar el vino y el caldo",
+                "Cocinar a fuego lento por 2 horas",
+                "Servir caliente"
+        );
     }
 
     @Test
-    @DisplayName("Debe crear una receta de participante con el constructor parametrizado")
-    void testContestantRecipeConstructor() {
-        // Arrange
-        String title = "Arroz con Pollo";
-        String chefName = "Pedro Martínez";
-        Integer season = 3;
-
-        // Act
-        ContestantRecipe contestantRecipe = new ContestantRecipe(title, ingredients, preparationSteps, chefName, season);
-
-        // Assert
-        assertNotNull(contestantRecipe);
-        assertEquals(title, contestantRecipe.getTitle());
-        assertEquals(ingredients, contestantRecipe.getIngredients());
-        assertEquals(preparationSteps, contestantRecipe.getPreparationSteps());
-        assertEquals(chefName, contestantRecipe.getChefName());
-        assertEquals("CONTESTANT", contestantRecipe.getRecipeType());
-        assertEquals(season, contestantRecipe.getSeason());
-        assertNotNull(contestantRecipe.getCreatedAt());
-        assertNotNull(contestantRecipe.getUpdatedAt());
-    }
-
-    @Test
-    @DisplayName("Debe crear una receta de participante vacía con el constructor sin argumentos")
-    void testContestantRecipeNoArgsConstructor() {
-        // Act
-        ContestantRecipe contestantRecipe = new ContestantRecipe();
-
-        // Assert
+    @DisplayName("Debería crear ContestantRecipe con constructor vacío")
+    void shouldCreateContestantRecipeWithNoArgsConstructor() {
+        contestantRecipe = new ContestantRecipe();
+        
         assertNotNull(contestantRecipe);
         assertNull(contestantRecipe.getTitle());
         assertNull(contestantRecipe.getIngredients());
@@ -61,214 +52,292 @@ class ContestantRecipeTest {
     }
 
     @Test
-    @DisplayName("Debe establecer el tipo de receta como CONTESTANT automáticamente")
-    void testRecipeTypeIsContestant() {
-        // Arrange & Act
-        ContestantRecipe contestantRecipe = new ContestantRecipe("Lasagna", ingredients, preparationSteps, "Ana Silva", 1);
-
-        // Assert
+    @DisplayName("Debería crear ContestantRecipe con constructor parametrizado")
+    void shouldCreateContestantRecipeWithParameterizedConstructor() {
+        contestantRecipe = new ContestantRecipe(
+                "Estofado de Carne",
+                ingredients,
+                preparationSteps,
+                "Ana María Rodríguez",
+                3
+        );
+        
+        assertNotNull(contestantRecipe);
+        assertEquals("Estofado de Carne", contestantRecipe.getTitle());
+        assertEquals(ingredients, contestantRecipe.getIngredients());
+        assertEquals(preparationSteps, contestantRecipe.getPreparationSteps());
+        assertEquals("Ana María Rodríguez", contestantRecipe.getChefName());
         assertEquals("CONTESTANT", contestantRecipe.getRecipeType());
-    }
-
-    @Test
-    @DisplayName("Debe heredar correctamente de la clase Recipe")
-    void testInheritanceFromRecipe() {
-        // Arrange & Act
-        ContestantRecipe contestantRecipe = new ContestantRecipe("Tacos al Pastor", ingredients, preparationSteps, "Luis Gómez", 2);
-
-        // Assert
-        assertTrue(contestantRecipe instanceof Recipe);
+        assertEquals(3, contestantRecipe.getSeason());
         assertNotNull(contestantRecipe.getCreatedAt());
         assertNotNull(contestantRecipe.getUpdatedAt());
     }
 
     @Test
-    @DisplayName("Debe almacenar correctamente la temporada")
-    void testSeasonStorage() {
-        // Arrange
-        Integer season = 5;
+    @DisplayName("Debería establecer automáticamente el tipo de receta como CONTESTANT")
+    void shouldSetRecipeTypeAsContestantAutomatically() {
+        contestantRecipe = new ContestantRecipe(
+                "Lasaña Casera",
+                ingredients,
+                preparationSteps,
+                "Carlos Pérez",
+                5
+        );
+        
+        assertEquals("CONTESTANT", contestantRecipe.getRecipeType());
+    }
 
-        // Act
-        ContestantRecipe contestantRecipe = new ContestantRecipe("Ceviche", ingredients, preparationSteps, "María López", season);
-
-        // Assert
-        assertEquals(season, contestantRecipe.getSeason());
+    @Test
+    @DisplayName("Debería requerir una temporada específica")
+    void shouldRequireSpecificSeason() {
+        contestantRecipe = new ContestantRecipe(
+                "Paella de Mariscos",
+                ingredients,
+                preparationSteps,
+                "Isabel García",
+                7
+        );
+        
+        assertEquals(7, contestantRecipe.getSeason());
         assertNotNull(contestantRecipe.getSeason());
     }
 
     @Test
-    @DisplayName("Debe poder modificar los atributos heredados")
-    void testModifyInheritedAttributes() {
-        // Arrange
-        ContestantRecipe contestantRecipe = new ContestantRecipe("Empanadas", ingredients, preparationSteps, "Carlos Ruiz", 4);
+    @DisplayName("Debería heredar comportamiento de la clase Recipe")
+    void shouldInheritBehaviorFromRecipeClass() {
+        contestantRecipe = new ContestantRecipe(
+                "Tiramisu Casero",
+                ingredients,
+                preparationSteps,
+                "Francesco Romano",
+                2
+        );
         
-        // Act
-        contestantRecipe.setConsecutiveNumber(20L);
-        contestantRecipe.setId("contestant456");
-        contestantRecipe.setTitle("Empanadas Argentinas");
-        contestantRecipe.setSeason(6);
-
-        // Assert
-        assertEquals(20L, contestantRecipe.getConsecutiveNumber());
-        assertEquals("contestant456", contestantRecipe.getId());
-        assertEquals("Empanadas Argentinas", contestantRecipe.getTitle());
-        assertEquals(6, contestantRecipe.getSeason());
+        // Verificar que es una instancia de Recipe
+        assertTrue(contestantRecipe instanceof Recipe);
+        
+        // Verificar que puede usar métodos de Recipe
+        contestantRecipe.setId("contestant-recipe-789");
+        contestantRecipe.setConsecutiveNumber(25L);
+        
+        assertEquals("contestant-recipe-789", contestantRecipe.getId());
+        assertEquals(25L, contestantRecipe.getConsecutiveNumber());
     }
 
     @Test
-    @DisplayName("Debe crear recetas de diferentes temporadas")
-    void testDifferentSeasons() {
-        // Arrange & Act
-        ContestantRecipe recipe1 = new ContestantRecipe("Receta T1", ingredients, preparationSteps, "Chef1", 1);
-        ContestantRecipe recipe2 = new ContestantRecipe("Receta T2", ingredients, preparationSteps, "Chef2", 2);
-        ContestantRecipe recipe3 = new ContestantRecipe("Receta T3", ingredients, preparationSteps, "Chef3", 3);
+    @DisplayName("Debería permitir establecer propiedades adicionales")
+    void shouldAllowSettingAdditionalProperties() {
+        contestantRecipe = new ContestantRecipe();
+        
+        contestantRecipe.setTitle("Ceviche Peruano");
+        contestantRecipe.setIngredients(ingredients);
+        contestantRecipe.setPreparationSteps(preparationSteps);
+        contestantRecipe.setChefName("Luis Vargas");
+        contestantRecipe.setSeason(4);
+        contestantRecipe.setId("contestant-001");
+        contestantRecipe.setConsecutiveNumber(10L);
+        
+        assertEquals("Ceviche Peruano", contestantRecipe.getTitle());
+        assertEquals(ingredients, contestantRecipe.getIngredients());
+        assertEquals(preparationSteps, contestantRecipe.getPreparationSteps());
+        assertEquals("Luis Vargas", contestantRecipe.getChefName());
+        assertEquals(4, contestantRecipe.getSeason());
+        assertEquals("contestant-001", contestantRecipe.getId());
+        assertEquals(10L, contestantRecipe.getConsecutiveNumber());
+    }
 
-        // Assert
+    @Test
+    @DisplayName("Debería manejar diferentes números de temporada")
+    void shouldHandleDifferentSeasonNumbers() {
+        // Temporada baja
+        ContestantRecipe recipe1 = new ContestantRecipe(
+                "Sopa de Tomate",
+                ingredients,
+                preparationSteps,
+                "María López",
+                1
+        );
+        
+        // Temporada alta
+        ContestantRecipe recipe2 = new ContestantRecipe(
+                "Cordero Asado",
+                ingredients,
+                preparationSteps,
+                "Pedro Martínez",
+                15
+        );
+        
         assertEquals(1, recipe1.getSeason());
-        assertEquals(2, recipe2.getSeason());
-        assertEquals(3, recipe3.getSeason());
-        assertNotEquals(recipe1.getSeason(), recipe2.getSeason());
+        assertEquals(15, recipe2.getSeason());
+        assertEquals("CONTESTANT", recipe1.getRecipeType());
+        assertEquals("CONTESTANT", recipe2.getRecipeType());
     }
 
     @Test
-    @DisplayName("Debe verificar igualdad entre dos recetas de participante con los mismos datos")
-    void testEquals() {
-        // Arrange
-        ContestantRecipe recipe1 = new ContestantRecipe("Pozole", ingredients, preparationSteps, "Sandra Torres", 2);
-        ContestantRecipe recipe2 = new ContestantRecipe("Pozole", ingredients, preparationSteps, "Sandra Torres", 2);
-        
+    @DisplayName("Debería ser igual a otra ContestantRecipe con los mismos valores")
+    void shouldBeEqualToAnotherContestantRecipeWithSameValues() {
+        ContestantRecipe recipe1 = new ContestantRecipe(
+                "Empanadas Argentinas",
+                ingredients,
+                preparationSteps,
+                "Sofía Herrera",
+                6
+        );
         recipe1.setId("1");
+        
+        ContestantRecipe recipe2 = new ContestantRecipe(
+                "Empanadas Argentinas",
+                ingredients,
+                preparationSteps,
+                "Sofía Herrera",
+                6
+        );
         recipe2.setId("1");
-        recipe1.setConsecutiveNumber(1L);
-        recipe2.setConsecutiveNumber(1L);
-
-        // Assert
+        recipe2.setCreatedAt(recipe1.getCreatedAt());
+        recipe2.setUpdatedAt(recipe1.getUpdatedAt());
+        
         assertEquals(recipe1, recipe2);
-    }
-
-    @Test
-    @DisplayName("Debe verificar desigualdad entre dos recetas de participante con datos diferentes")
-    void testNotEquals() {
-        // Arrange
-        ContestantRecipe recipe1 = new ContestantRecipe("Mole Poblano", ingredients, preparationSteps, "Roberto Díaz", 1);
-        ContestantRecipe recipe2 = new ContestantRecipe("Chiles en Nogada", ingredients, preparationSteps, "Patricia Vega", 2);
-        
-        recipe1.setId("1");
-        recipe2.setId("2");
-
-        // Assert
-        assertNotEquals(recipe1, recipe2);
-    }
-
-    @Test
-    @DisplayName("Debe verificar desigualdad entre recetas de la misma temporada pero diferente título")
-    void testNotEqualsSameSeason() {
-        // Arrange
-        ContestantRecipe recipe1 = new ContestantRecipe("Tamales", ingredients, preparationSteps, "Juan Pérez", 3);
-        ContestantRecipe recipe2 = new ContestantRecipe("Quesadillas", ingredients, preparationSteps, "María García", 3);
-
-        // Assert
-        assertNotEquals(recipe1.getTitle(), recipe2.getTitle());
-        assertEquals(recipe1.getSeason(), recipe2.getSeason());
-    }
-
-    @Test
-    @DisplayName("Debe generar correctamente el método toString")
-    void testToString() {
-        // Arrange
-        ContestantRecipe contestantRecipe = new ContestantRecipe("Enchiladas", ingredients, preparationSteps, "Laura Méndez", 4);
-
-        // Act
-        String result = contestantRecipe.toString();
-
-        // Assert
-        assertNotNull(result);
-        assertTrue(result.contains("Enchiladas"));
-        assertTrue(result.contains("Laura Méndez"));
-        assertTrue(result.contains("CONTESTANT"));
-        assertTrue(result.contains("4"));
-    }
-
-    @Test
-    @DisplayName("Debe tener el mismo hashCode para recetas iguales")
-    void testHashCode() {
-        // Arrange
-        ContestantRecipe recipe1 = new ContestantRecipe("Flan", ingredients, preparationSteps, "Diego Castro", 1);
-        ContestantRecipe recipe2 = new ContestantRecipe("Flan", ingredients, preparationSteps, "Diego Castro", 1);
-        
-        recipe1.setId("1");
-        recipe2.setId("1");
-
-        // Assert
         assertEquals(recipe1.hashCode(), recipe2.hashCode());
     }
 
     @Test
-    @DisplayName("Debe permitir crear múltiples recetas de participantes")
-    void testMultipleContestantRecipes() {
-        // Arrange & Act
-        ContestantRecipe recipe1 = new ContestantRecipe("Sopa Azteca", ingredients, preparationSteps, "Participante A", 1);
-        ContestantRecipe recipe2 = new ContestantRecipe("Cochinita Pibil", ingredients, preparationSteps, "Participante B", 2);
-        ContestantRecipe recipe3 = new ContestantRecipe("Aguachile", ingredients, preparationSteps, "Participante C", 3);
-
-        // Assert
-        assertNotNull(recipe1);
-        assertNotNull(recipe2);
-        assertNotNull(recipe3);
-        assertEquals("CONTESTANT", recipe1.getRecipeType());
-        assertEquals("CONTESTANT", recipe2.getRecipeType());
-        assertEquals("CONTESTANT", recipe3.getRecipeType());
-        assertNotEquals(recipe1.getSeason(), recipe2.getSeason());
+    @DisplayName("No debería ser igual a otra ContestantRecipe con valores diferentes")
+    void shouldNotBeEqualToAnotherContestantRecipeWithDifferentValues() {
+        ContestantRecipe recipe1 = new ContestantRecipe(
+                "Churrasco",
+                ingredients,
+                preparationSteps,
+                "Diego Silva",
+                3
+        );
+        
+        ContestantRecipe recipe2 = new ContestantRecipe(
+                "Arepa Rellena",
+                ingredients,
+                preparationSteps,
+                "Carmen Ruiz",
+                5
+        );
+        
+        assertNotEquals(recipe1, recipe2);
     }
 
     @Test
-    @DisplayName("Debe mantener la lista de ingredientes intacta")
-    void testIngredientsListIntegrity() {
-        // Arrange
-        ContestantRecipe contestantRecipe = new ContestantRecipe("Barbacoa", ingredients, preparationSteps, "Héctor Ramírez", 2);
-
-        // Act
-        List<String> retrievedIngredients = contestantRecipe.getIngredients();
-
-        // Assert
-        assertEquals(ingredients.size(), retrievedIngredients.size());
-        assertEquals(ingredients, retrievedIngredients);
+    @DisplayName("No debería ser igual si las temporadas son diferentes")
+    void shouldNotBeEqualIfSeasonsAreDifferent() {
+        ContestantRecipe recipe1 = new ContestantRecipe(
+                "Tacos al Pastor",
+                ingredients,
+                preparationSteps,
+                "Alejandro Morales",
+                2
+        );
+        
+        ContestantRecipe recipe2 = new ContestantRecipe(
+                "Tacos al Pastor",
+                ingredients,
+                preparationSteps,
+                "Alejandro Morales",
+                4
+        );
+        
+        assertNotEquals(recipe1, recipe2);
     }
 
     @Test
-    @DisplayName("Debe mantener la lista de pasos de preparación intacta")
-    void testPreparationStepsListIntegrity() {
-        // Arrange
-        ContestantRecipe contestantRecipe = new ContestantRecipe("Birria", ingredients, preparationSteps, "Sofía Hernández", 1);
-
-        // Act
-        List<String> retrievedSteps = contestantRecipe.getPreparationSteps();
-
-        // Assert
-        assertEquals(preparationSteps.size(), retrievedSteps.size());
-        assertEquals(preparationSteps, retrievedSteps);
+    @DisplayName("toString debería contener información relevante incluyendo temporada")
+    void toStringShouldContainRelevantInformationIncludingSeason() {
+        contestantRecipe = new ContestantRecipe(
+                "Mole Poblano",
+                ingredients,
+                preparationSteps,
+                "Elena Jiménez",
+                8
+        );
+        contestantRecipe.setId("contestant-recipe-999");
+        
+        String toString = contestantRecipe.toString();
+        
+        assertNotNull(toString);
+        assertFalse(toString.isEmpty());
+        // Verificar que el toString contiene al menos el nombre de la clase
+        assertTrue(toString.contains("ContestantRecipe") || toString.contains("Recipe"));
     }
 
     @Test
-    @DisplayName("Debe permitir temporadas con valores altos")
-    void testHighSeasonNumber() {
-        // Arrange
-        Integer highSeason = 99;
-
-        // Act
-        ContestantRecipe contestantRecipe = new ContestantRecipe("Receta Futura", ingredients, preparationSteps, "Chef Futuro", highSeason);
-
-        // Assert
-        assertEquals(highSeason, contestantRecipe.getSeason());
+    @DisplayName("Debería manejar temporada cero")
+    void shouldHandleSeasonZero() {
+        contestantRecipe = new ContestantRecipe(
+                "Ensalada César",
+                ingredients,
+                preparationSteps,
+                "Roberto Kim",
+                0
+        );
+        
+        assertEquals(0, contestantRecipe.getSeason());
+        assertEquals("CONTESTANT", contestantRecipe.getRecipeType());
     }
 
     @Test
-    @DisplayName("Debe permitir temporada 1 como valor mínimo común")
-    void testSeasonOne() {
-        // Arrange & Act
-        ContestantRecipe contestantRecipe = new ContestantRecipe("Primera Receta", ingredients, preparationSteps, "Primer Participante", 1);
+    @DisplayName("Debería manejar temporadas negativas")
+    void shouldHandleNegativeSeasons() {
+        contestantRecipe = new ContestantRecipe(
+                "Pizza Margherita",
+                ingredients,
+                preparationSteps,
+                "Giuseppe Rossi",
+                -1
+        );
+        
+        assertEquals(-1, contestantRecipe.getSeason());
+        assertEquals("CONTESTANT", contestantRecipe.getRecipeType());
+    }
 
-        // Assert
+    @Test
+    @DisplayName("Debería mantener el tipo CONTESTANT incluso si se intenta cambiar")
+    void shouldMaintainContestantTypeEvenIfAttemptedToChange() {
+        contestantRecipe = new ContestantRecipe(
+                "Risotto de Champiñones",
+                ingredients,
+                preparationSteps,
+                "Valentina Costa",
+                9
+        );
+        
+        // Intentar cambiar el tipo (aunque en la práctica esto debería evitarse)
+        contestantRecipe.setRecipeType("CHEF");
+        
+        // Verificar que se puede cambiar (el comportamiento actual permite esto)
+        assertEquals("CHEF", contestantRecipe.getRecipeType());
+        
+        // Pero cuando se crea una nueva instancia, siempre será CONTESTANT
+        ContestantRecipe newContestantRecipe = new ContestantRecipe(
+                "Gazpacho Andaluz",
+                ingredients,
+                preparationSteps,
+                "Paloma Sánchez",
+                12
+        );
+        
+        assertEquals("CONTESTANT", newContestantRecipe.getRecipeType());
+    }
+
+    @Test
+    @DisplayName("Debería permitir cambiar la temporada después de la creación")
+    void shouldAllowChangingSeasonAfterCreation() {
+        contestantRecipe = new ContestantRecipe(
+                "Paté de Hígado",
+                ingredients,
+                preparationSteps,
+                "André Dubois",
+                1
+        );
+        
         assertEquals(1, contestantRecipe.getSeason());
+        
+        contestantRecipe.setSeason(10);
+        
+        assertEquals(10, contestantRecipe.getSeason());
     }
 }

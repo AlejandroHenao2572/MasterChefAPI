@@ -9,269 +9,343 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Pruebas unitarias para ViewerRecipe")
+@DisplayName("ViewerRecipe Model Tests")
 class ViewerRecipeTest {
 
+    private ViewerRecipe viewerRecipe;
     private List<String> ingredients;
     private List<String> preparationSteps;
 
     @BeforeEach
     void setUp() {
-        ingredients = Arrays.asList("Tomate", "Pepino", "Cebolla", "Aceite de oliva");
-        preparationSteps = Arrays.asList("Picar los vegetales", "Mezclar en un bowl", "Aliñar con aceite");
+        ingredients = Arrays.asList(
+                "2 huevos",
+                "100ml de leche",
+                "100g de harina",
+                "1 cucharada de azúcar",
+                "Pizca de sal",
+                "Mantequilla para la sartén"
+        );
+        
+        preparationSteps = Arrays.asList(
+                "Batir los huevos en un bowl",
+                "Añadir la leche y mezclar",
+                "Incorporar la harina gradualmente",
+                "Agregar azúcar y sal",
+                "Dejar reposar la masa 10 minutos",
+                "Cocinar en sartén caliente con mantequilla"
+        );
     }
 
     @Test
-    @DisplayName("Debe crear una receta de televidente con el constructor parametrizado")
-    void testViewerRecipeConstructor() {
-        // Arrange
-        String title = "Ensalada Fresca";
-        String chefName = "Carmen Rodríguez";
-
-        // Act
-        ViewerRecipe viewerRecipe = new ViewerRecipe(title, ingredients, preparationSteps, chefName);
-
-        // Assert
-        assertNotNull(viewerRecipe);
-        assertEquals(title, viewerRecipe.getTitle());
-        assertEquals(ingredients, viewerRecipe.getIngredients());
-        assertEquals(preparationSteps, viewerRecipe.getPreparationSteps());
-        assertEquals(chefName, viewerRecipe.getChefName());
-        assertEquals("VIEWER", viewerRecipe.getRecipeType());
-        assertNotNull(viewerRecipe.getCreatedAt());
-        assertNotNull(viewerRecipe.getUpdatedAt());
-        assertNull(viewerRecipe.getSeason());
-    }
-
-    @Test
-    @DisplayName("Debe crear una receta de televidente vacía con el constructor sin argumentos")
-    void testViewerRecipeNoArgsConstructor() {
-        // Act
-        ViewerRecipe viewerRecipe = new ViewerRecipe();
-
-        // Assert
+    @DisplayName("Debería crear ViewerRecipe con constructor vacío")
+    void shouldCreateViewerRecipeWithNoArgsConstructor() {
+        viewerRecipe = new ViewerRecipe();
+        
         assertNotNull(viewerRecipe);
         assertNull(viewerRecipe.getTitle());
         assertNull(viewerRecipe.getIngredients());
         assertNull(viewerRecipe.getPreparationSteps());
         assertNull(viewerRecipe.getChefName());
         assertNull(viewerRecipe.getRecipeType());
+        assertNull(viewerRecipe.getSeason());
     }
 
     @Test
-    @DisplayName("Debe establecer el tipo de receta como VIEWER automáticamente")
-    void testRecipeTypeIsViewer() {
-        // Arrange & Act
-        ViewerRecipe viewerRecipe = new ViewerRecipe("Smoothie Verde", ingredients, preparationSteps, "Lucía Fernández");
-
-        // Assert
+    @DisplayName("Debería crear ViewerRecipe con constructor parametrizado")
+    void shouldCreateViewerRecipeWithParameterizedConstructor() {
+        viewerRecipe = new ViewerRecipe(
+                "Crepes Básicos",
+                ingredients,
+                preparationSteps,
+                "María González"
+        );
+        
+        assertNotNull(viewerRecipe);
+        assertEquals("Crepes Básicos", viewerRecipe.getTitle());
+        assertEquals(ingredients, viewerRecipe.getIngredients());
+        assertEquals(preparationSteps, viewerRecipe.getPreparationSteps());
+        assertEquals("María González", viewerRecipe.getChefName());
         assertEquals("VIEWER", viewerRecipe.getRecipeType());
-    }
-
-    @Test
-    @DisplayName("Debe heredar correctamente de la clase Recipe")
-    void testInheritanceFromRecipe() {
-        // Arrange & Act
-        ViewerRecipe viewerRecipe = new ViewerRecipe("Guacamole Casero", ingredients, preparationSteps, "Miguel Ángel Soto");
-
-        // Assert
-        assertTrue(viewerRecipe instanceof Recipe);
+        assertNull(viewerRecipe.getSeason());
         assertNotNull(viewerRecipe.getCreatedAt());
         assertNotNull(viewerRecipe.getUpdatedAt());
     }
 
     @Test
-    @DisplayName("Debe no tener temporada asignada")
-    void testSeasonIsNull() {
-        // Arrange & Act
-        ViewerRecipe viewerRecipe = new ViewerRecipe("Salsa Pico de Gallo", ingredients, preparationSteps, "Rosa María López");
+    @DisplayName("Debería establecer automáticamente el tipo de receta como VIEWER")
+    void shouldSetRecipeTypeAsViewerAutomatically() {
+        viewerRecipe = new ViewerRecipe(
+                "Tortilla Española",
+                ingredients,
+                preparationSteps,
+                "Carmen López"
+        );
+        
+        assertEquals("VIEWER", viewerRecipe.getRecipeType());
+    }
 
-        // Assert
+    @Test
+    @DisplayName("Season debería ser null por defecto en ViewerRecipe")
+    void seasonShouldBeNullByDefaultInViewerRecipe() {
+        viewerRecipe = new ViewerRecipe(
+                "Gazpacho Casero",
+                ingredients,
+                preparationSteps,
+                "Antonio Ruiz"
+        );
+        
         assertNull(viewerRecipe.getSeason());
     }
 
     @Test
-    @DisplayName("Debe poder modificar los atributos heredados")
-    void testModifyInheritedAttributes() {
-        // Arrange
-        ViewerRecipe viewerRecipe = new ViewerRecipe("Limonada Natural", ingredients, preparationSteps, "Gabriela Morales");
+    @DisplayName("Debería heredar comportamiento de la clase Recipe")
+    void shouldInheritBehaviorFromRecipeClass() {
+        viewerRecipe = new ViewerRecipe(
+                "Flan de Vainilla",
+                ingredients,
+                preparationSteps,
+                "Rosa María"
+        );
         
-        // Act
-        viewerRecipe.setConsecutiveNumber(25L);
-        viewerRecipe.setId("viewer789");
-        viewerRecipe.setTitle("Limonada con Hierbabuena");
-
-        // Assert
-        assertEquals(25L, viewerRecipe.getConsecutiveNumber());
-        assertEquals("viewer789", viewerRecipe.getId());
-        assertEquals("Limonada con Hierbabuena", viewerRecipe.getTitle());
+        // Verificar que es una instancia de Recipe
+        assertTrue(viewerRecipe instanceof Recipe);
+        
+        // Verificar que puede usar métodos de Recipe
+        viewerRecipe.setId("viewer-recipe-456");
+        viewerRecipe.setConsecutiveNumber(75L);
+        
+        assertEquals("viewer-recipe-456", viewerRecipe.getId());
+        assertEquals(75L, viewerRecipe.getConsecutiveNumber());
     }
 
     @Test
-    @DisplayName("Debe verificar igualdad entre dos recetas de televidente con los mismos datos")
-    void testEquals() {
-        // Arrange
-        ViewerRecipe recipe1 = new ViewerRecipe("Agua de Jamaica", ingredients, preparationSteps, "Andrés Cruz");
-        ViewerRecipe recipe2 = new ViewerRecipe("Agua de Jamaica", ingredients, preparationSteps, "Andrés Cruz");
+    @DisplayName("Debería permitir establecer propiedades adicionales")
+    void shouldAllowSettingAdditionalProperties() {
+        viewerRecipe = new ViewerRecipe();
         
-        recipe1.setId("1");
-        recipe2.setId("1");
-        recipe1.setConsecutiveNumber(1L);
-        recipe2.setConsecutiveNumber(1L);
+        viewerRecipe.setTitle("Arroz con Leche");
+        viewerRecipe.setIngredients(ingredients);
+        viewerRecipe.setPreparationSteps(preparationSteps);
+        viewerRecipe.setChefName("Esperanza Morales");
+        viewerRecipe.setId("viewer-001");
+        viewerRecipe.setConsecutiveNumber(33L);
+        
+        assertEquals("Arroz con Leche", viewerRecipe.getTitle());
+        assertEquals(ingredients, viewerRecipe.getIngredients());
+        assertEquals(preparationSteps, viewerRecipe.getPreparationSteps());
+        assertEquals("Esperanza Morales", viewerRecipe.getChefName());
+        assertEquals("viewer-001", viewerRecipe.getId());
+        assertEquals(33L, viewerRecipe.getConsecutiveNumber());
+    }
 
-        // Assert
+    @Test
+    @DisplayName("Debería ser igual a otra ViewerRecipe con los mismos valores")
+    void shouldBeEqualToAnotherViewerRecipeWithSameValues() {
+        ViewerRecipe recipe1 = new ViewerRecipe(
+                "Milanesas de Pollo",
+                ingredients,
+                preparationSteps,
+                "Juana Pérez"
+        );
+        recipe1.setId("1");
+        
+        ViewerRecipe recipe2 = new ViewerRecipe(
+                "Milanesas de Pollo",
+                ingredients,
+                preparationSteps,
+                "Juana Pérez"
+        );
+        recipe2.setId("1");
+        recipe2.setCreatedAt(recipe1.getCreatedAt());
+        recipe2.setUpdatedAt(recipe1.getUpdatedAt());
+        
         assertEquals(recipe1, recipe2);
-    }
-
-    @Test
-    @DisplayName("Debe verificar desigualdad entre dos recetas de televidente con datos diferentes")
-    void testNotEquals() {
-        // Arrange
-        ViewerRecipe recipe1 = new ViewerRecipe("Salsa Verde", ingredients, preparationSteps, "Fernando Ortiz");
-        ViewerRecipe recipe2 = new ViewerRecipe("Salsa Roja", ingredients, preparationSteps, "Isabel Navarro");
-        
-        recipe1.setId("1");
-        recipe2.setId("2");
-
-        // Assert
-        assertNotEquals(recipe1, recipe2);
-    }
-
-    @Test
-    @DisplayName("Debe generar correctamente el método toString")
-    void testToString() {
-        // Arrange
-        ViewerRecipe viewerRecipe = new ViewerRecipe("Té Helado", ingredients, preparationSteps, "Mónica Paz");
-
-        // Act
-        String result = viewerRecipe.toString();
-
-        // Assert
-        assertNotNull(result);
-        assertTrue(result.contains("Té Helado"));
-        assertTrue(result.contains("Mónica Paz"));
-        assertTrue(result.contains("VIEWER"));
-    }
-
-    @Test
-    @DisplayName("Debe tener el mismo hashCode para recetas iguales")
-    void testHashCode() {
-        // Arrange
-        ViewerRecipe recipe1 = new ViewerRecipe("Horchata", ingredients, preparationSteps, "Daniela Jiménez");
-        ViewerRecipe recipe2 = new ViewerRecipe("Horchata", ingredients, preparationSteps, "Daniela Jiménez");
-        
-        recipe1.setId("1");
-        recipe2.setId("1");
-
-        // Assert
         assertEquals(recipe1.hashCode(), recipe2.hashCode());
     }
 
     @Test
-    @DisplayName("Debe permitir crear múltiples recetas de televidentes")
-    void testMultipleViewerRecipes() {
-        // Arrange & Act
-        ViewerRecipe recipe1 = new ViewerRecipe("Salsa Guacamole", ingredients, preparationSteps, "Televidente A");
-        ViewerRecipe recipe2 = new ViewerRecipe("Agua de Tamarindo", ingredients, preparationSteps, "Televidente B");
-        ViewerRecipe recipe3 = new ViewerRecipe("Ensalada César", ingredients, preparationSteps, "Televidente C");
-
-        // Assert
-        assertNotNull(recipe1);
-        assertNotNull(recipe2);
-        assertNotNull(recipe3);
-        assertEquals("VIEWER", recipe1.getRecipeType());
-        assertEquals("VIEWER", recipe2.getRecipeType());
-        assertEquals("VIEWER", recipe3.getRecipeType());
-        assertNotEquals(recipe1.getTitle(), recipe2.getTitle());
+    @DisplayName("No debería ser igual a otra ViewerRecipe con valores diferentes")
+    void shouldNotBeEqualToAnotherViewerRecipeWithDifferentValues() {
+        ViewerRecipe recipe1 = new ViewerRecipe(
+                "Empanadas de Carne",
+                ingredients,
+                preparationSteps,
+                "Dolores García"
+        );
+        
+        ViewerRecipe recipe2 = new ViewerRecipe(
+                "Empanadas de Pollo",
+                ingredients,
+                preparationSteps,
+                "Catalina Sánchez"
+        );
+        
+        assertNotEquals(recipe1, recipe2);
     }
 
     @Test
-    @DisplayName("Debe mantener la lista de ingredientes intacta")
-    void testIngredientsListIntegrity() {
-        // Arrange
-        ViewerRecipe viewerRecipe = new ViewerRecipe("Ceviche de Camarón", ingredients, preparationSteps, "Alejandra Santos");
-
-        // Act
-        List<String> retrievedIngredients = viewerRecipe.getIngredients();
-
-        // Assert
-        assertEquals(ingredients.size(), retrievedIngredients.size());
-        assertEquals(ingredients, retrievedIngredients);
+    @DisplayName("toString debería contener información relevante")
+    void toStringShouldContainRelevantInformation() {
+        viewerRecipe = new ViewerRecipe(
+                "Alfajores Caseros",
+                ingredients,
+                preparationSteps,
+                "Silvia Rodríguez"
+        );
+        viewerRecipe.setId("viewer-recipe-789");
+        
+        String toString = viewerRecipe.toString();
+        
+        assertNotNull(toString);
+        assertFalse(toString.isEmpty());
+        // Verificar que el toString contiene al menos el nombre de la clase
+        assertTrue(toString.contains("ViewerRecipe") || toString.contains("Recipe"));
     }
 
     @Test
-    @DisplayName("Debe mantener la lista de pasos de preparación intacta")
-    void testPreparationStepsListIntegrity() {
-        // Arrange
-        ViewerRecipe viewerRecipe = new ViewerRecipe("Tostadas de Tinga", ingredients, preparationSteps, "Ricardo Vargas");
-
-        // Act
-        List<String> retrievedSteps = viewerRecipe.getPreparationSteps();
-
-        // Assert
-        assertEquals(preparationSteps.size(), retrievedSteps.size());
-        assertEquals(preparationSteps, retrievedSteps);
+    @DisplayName("Debería manejar nombres de cocinero amateur vacíos")
+    void shouldHandleEmptyAmateurChefNames() {
+        viewerRecipe = new ViewerRecipe(
+                "Receta Anónima de Televidentes",
+                ingredients,
+                preparationSteps,
+                ""
+        );
+        
+        assertEquals("", viewerRecipe.getChefName());
+        assertEquals("VIEWER", viewerRecipe.getRecipeType());
     }
 
     @Test
-    @DisplayName("Debe permitir nombres de chef de diferente longitud")
-    void testDifferentChefNameLengths() {
-        // Arrange & Act
-        ViewerRecipe recipe1 = new ViewerRecipe("Receta 1", ingredients, preparationSteps, "Ana");
-        ViewerRecipe recipe2 = new ViewerRecipe("Receta 2", ingredients, preparationSteps, "Juan Carlos de la Rosa");
-
-        // Assert
-        assertEquals("Ana", recipe1.getChefName());
-        assertEquals("Juan Carlos de la Rosa", recipe2.getChefName());
-        assertTrue(recipe1.getChefName().length() < recipe2.getChefName().length());
+    @DisplayName("Debería manejar recetas simples para principiantes")
+    void shouldHandleSimpleRecipesForBeginners() {
+        List<String> simpleIngredients = Arrays.asList(
+                "Pan",
+                "Mantequilla",
+                "Mermelada"
+        );
+        
+        List<String> simpleSteps = Arrays.asList(
+                "Tostar el pan",
+                "Untar mantequilla",
+                "Añadir mermelada"
+        );
+        
+        viewerRecipe = new ViewerRecipe(
+                "Tostada con Mermelada",
+                simpleIngredients,
+                simpleSteps,
+                "Niño de 8 años"
+        );
+        
+        assertEquals("Tostada con Mermelada", viewerRecipe.getTitle());
+        assertEquals(3, viewerRecipe.getIngredients().size());
+        assertEquals(3, viewerRecipe.getPreparationSteps().size());
+        assertEquals("VIEWER", viewerRecipe.getRecipeType());
     }
 
     @Test
-    @DisplayName("Debe permitir títulos de receta creativos")
-    void testCreativeRecipeTitles() {
-        // Arrange & Act
-        ViewerRecipe recipe1 = new ViewerRecipe("Delicia Tropical", ingredients, preparationSteps, "Chef1");
-        ViewerRecipe recipe2 = new ViewerRecipe("Sorpresa del Chef", ingredients, preparationSteps, "Chef2");
-        ViewerRecipe recipe3 = new ViewerRecipe("Magia en el Plato", ingredients, preparationSteps, "Chef3");
-
-        // Assert
-        assertNotNull(recipe1.getTitle());
-        assertNotNull(recipe2.getTitle());
-        assertNotNull(recipe3.getTitle());
-        assertTrue(recipe1.getTitle().contains("Tropical"));
-        assertTrue(recipe2.getTitle().contains("Sorpresa"));
-        assertTrue(recipe3.getTitle().contains("Magia"));
+    @DisplayName("Debería manejar recetas familiares tradicionales")
+    void shouldHandleTraditionalFamilyRecipes() {
+        viewerRecipe = new ViewerRecipe(
+                "Receta de la Abuela: Sopa de Fideos",
+                ingredients,
+                preparationSteps,
+                "Familia Hernández"
+        );
+        
+        assertEquals("Receta de la Abuela: Sopa de Fideos", viewerRecipe.getTitle());
+        assertEquals("Familia Hernández", viewerRecipe.getChefName());
+        assertEquals("VIEWER", viewerRecipe.getRecipeType());
+        assertNull(viewerRecipe.getSeason());
     }
 
     @Test
-    @DisplayName("Debe permitir diferentes cantidades de ingredientes")
-    void testDifferentIngredientsCount() {
-        // Arrange
-        List<String> fewIngredients = Arrays.asList("Sal", "Pimienta");
-        List<String> manyIngredients = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H");
-
-        // Act
-        ViewerRecipe recipe1 = new ViewerRecipe("Receta Simple", fewIngredients, preparationSteps, "Chef1");
-        ViewerRecipe recipe2 = new ViewerRecipe("Receta Compleja", manyIngredients, preparationSteps, "Chef2");
-
-        // Assert
-        assertEquals(2, recipe1.getIngredients().size());
-        assertEquals(8, recipe2.getIngredients().size());
+    @DisplayName("Debería mantener el tipo VIEWER incluso si se intenta cambiar")
+    void shouldMaintainViewerTypeEvenIfAttemptedToChange() {
+        viewerRecipe = new ViewerRecipe(
+                "Brownies de Chocolate",
+                ingredients,
+                preparationSteps,
+                "Lucas Martín"
+        );
+        
+        // Intentar cambiar el tipo (aunque en la práctica esto debería evitarse)
+        viewerRecipe.setRecipeType("CHEF");
+        
+        // Verificar que se puede cambiar (el comportamiento actual permite esto)
+        assertEquals("CHEF", viewerRecipe.getRecipeType());
+        
+        // Pero cuando se crea una nueva instancia, siempre será VIEWER
+        ViewerRecipe newViewerRecipe = new ViewerRecipe(
+                "Cookies de Avena",
+                ingredients,
+                preparationSteps,
+                "Sofía Ramírez"
+        );
+        
+        assertEquals("VIEWER", newViewerRecipe.getRecipeType());
     }
 
     @Test
-    @DisplayName("Debe permitir diferentes cantidades de pasos de preparación")
-    void testDifferentPreparationStepsCount() {
-        // Arrange
-        List<String> fewSteps = Arrays.asList("Paso 1");
-        List<String> manySteps = Arrays.asList("Paso 1", "Paso 2", "Paso 3", "Paso 4", "Paso 5");
+    @DisplayName("Debería permitir recetas enviadas por televidentes internacionales")
+    void shouldAllowRecipesFromInternationalViewers() {
+        List<String> internationalIngredients = Arrays.asList(
+                "Curry powder",
+                "Coconut milk",
+                "Basmati rice",
+                "Chicken breast",
+                "Onions",
+                "Garlic"
+        );
+        
+        viewerRecipe = new ViewerRecipe(
+                "Indian Chicken Curry",
+                internationalIngredients,
+                preparationSteps,
+                "Priya Sharma (Viewer from India)"
+        );
+        
+        assertEquals("Indian Chicken Curry", viewerRecipe.getTitle());
+        assertEquals("Priya Sharma (Viewer from India)", viewerRecipe.getChefName());
+        assertEquals("VIEWER", viewerRecipe.getRecipeType());
+        assertTrue(viewerRecipe.getIngredients().contains("Curry powder"));
+    }
 
-        // Act
-        ViewerRecipe recipe1 = new ViewerRecipe("Receta Rápida", ingredients, fewSteps, "Chef1");
-        ViewerRecipe recipe2 = new ViewerRecipe("Receta Elaborada", ingredients, manySteps, "Chef2");
+    @Test
+    @DisplayName("No debería tener temporada aunque se intente establecer")
+    void shouldNotHaveSeasonEvenIfAttemptedToSet() {
+        viewerRecipe = new ViewerRecipe(
+                "Guacamole Casero",
+                ingredients,
+                preparationSteps,
+                "Pedro Jiménez"
+        );
+        
+        // Los ViewerRecipe no deberían tener temporada
+        assertNull(viewerRecipe.getSeason());
+        
+        // Intentar establecer una temporada
+        viewerRecipe.setSeason(5);
+        
+        // Verificar que se puede establecer (aunque no debería tener sentido para viewers)
+        assertEquals(5, viewerRecipe.getSeason());
+    }
 
-        // Assert
-        assertEquals(1, recipe1.getPreparationSteps().size());
-        assertEquals(5, recipe2.getPreparationSteps().size());
+    @Test
+    @DisplayName("Debería manejar recetas con nombres largos de televidentes")
+    void shouldHandleRecipesWithLongViewerNames() {
+        String longViewerName = "María del Carmen Esperanza Rodríguez García de la Torre";
+        
+        viewerRecipe = new ViewerRecipe(
+                "Paella de Verduras",
+                ingredients,
+                preparationSteps,
+                longViewerName
+        );
+        
+        assertEquals(longViewerName, viewerRecipe.getChefName());
+        assertEquals("VIEWER", viewerRecipe.getRecipeType());
     }
 }

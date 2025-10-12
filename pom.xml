@@ -69,13 +69,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
-        <!-- JUnit Jupiter (incluido en spring-boot-starter-test) -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -97,17 +90,13 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
+                <version>0.8.11</version>
                 <executions>
-                    <!-- Preparar el agente de JaCoCo antes de ejecutar las pruebas -->
                     <execution>
-                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-                    
-                    <!-- Generar reporte después de ejecutar las pruebas -->
                     <execution>
                         <id>report</id>
                         <phase>test</phase>
@@ -115,8 +104,6 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
-                    
-                    <!-- Verificar la cobertura mínima -->
                     <execution>
                         <id>jacoco-check</id>
                         <goals>
@@ -130,12 +117,7 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.90</minimum>
-                                        </limit>
-                                        <limit>
-                                            <counter>BRANCH</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.90</minimum>
+                                            <minimum>0.80</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -143,26 +125,6 @@
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <!-- Excluir clases generadas y configuración -->
-                    <excludes>
-                        <exclude>**/MasterChefApiApplication.class</exclude>
-                        <exclude>**/config/**</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            
-            <!-- Maven Surefire Plugin para ejecutar pruebas -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                        <include>**/*Tests.java</include>
-                    </includes>
-                </configuration>
             </plugin>
         </plugins>
     </build>

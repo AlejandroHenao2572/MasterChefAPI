@@ -4,9 +4,8 @@
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.0-brightgreen?style=for-the-badge&logo=spring)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?style=for-the-badge&logo=mongodb)
 ![Azure](https://img.shields.io/badge/Azure-Deployed-blue?style=for-the-badge&logo=microsoftazure)
-![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge)
-![CI/CD Pipeline](https://github.com/AlejandroHenao2572/recipe-management-api/workflows/CI%2FCD%20Pipeline%20-%20Recipe%20Management%20API/badge.svg?branch=develop)
-![Deploy to Azure](https://github.com/AlejandroHenao2572/recipe-management-api/workflows/Deploy%20to%20Azure%20-%20Recipe%20Management%20API/badge.svg?branch=main)
+
+
 
 API REST para la gestión de recetas de cocina desarrollada para el programa MasterChef. Permite a participantes, chefs y televidentes registrar, consultar y gestionar recetas de cocina de manera interactiva.
 
@@ -342,8 +341,8 @@ El proyecto incluye dos workflows de CI/CD:
 **Trigger:** Push o Pull Request a la rama `develop`
 
 **Funciones:**
-- ✅ Ejecuta tests automáticamente
-- ✅ Valida que el código compile
+- Ejecuta tests automáticamente
+- Valida que el código compile
 
 ```yaml
 # Ubicación: .github/workflows/ci-cd.yml
@@ -355,9 +354,9 @@ El proyecto incluye dos workflows de CI/CD:
 **Trigger:** Push a la rama `main`
 
 **Funciones:**
-- ✅ Compila la aplicación
-- ✅ Empaqueta el JAR
-- ✅ Despliega automáticamente en Azure
+- Compila la aplicación
+- Empaqueta el JAR
+- Despliega automáticamente en Azure
 
 ```yaml
 # Ubicación: .github/workflows/deploy-azure.yml

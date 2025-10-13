@@ -213,12 +213,17 @@ Abre tu navegador y ve a:
 ### 1. Registrar Receta de Televidente
 
 **Endpoint:** `POST /api/recipes/viewer`
-![alt text](image.png)
+![alt text](image.png)   
+
+![alt text](image-1.png) 
+ 
+![alt text](image-2.png)
 ---
 
 ### 2. Registrar Receta de Participante
 
 **Endpoint:** `POST /api/recipes/contestant`
+
 
 ---
 

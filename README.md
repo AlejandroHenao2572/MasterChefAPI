@@ -24,10 +24,6 @@ API REST para la gestión de recetas de cocina desarrollada para el programa Mas
 - [Documentación Swagger](#-documentación-swagger)
 - [Testing](#-testing)
 - [CI/CD](#-cicd)
-- [Despliegue en Azure](#-despliegue-en-azure)
-- [Contribución](#-contribución)
-- [Licencia](#-licencia)
-- [Contacto](#-contacto)
 
 ---
 
@@ -82,7 +78,7 @@ Cada receta incluye:
 - **Azure App Service** - Hosting en la nube
 
 ### Herramientas Adicionales
-- **Lombok** - Reducción de código boilerplate
+- **Lombok** - Reducción de código
 
 ---
 
@@ -111,10 +107,10 @@ Cada receta incluye:
 
 Antes de comenzar, asegúrate de tener instalado:
 
-- **Java 21** o superior ([Descargar](https://adoptium.net/))
-- **Maven 3.8+** ([Descargar](https://maven.apache.org/download.cgi))
-- **MongoDB Atlas** ([mongodb.com](https://www.mongodb.com/cloud/atlas))
-- **Git** ([Descargar](https://git-scm.com/downloads))
+- **Java 21** o superior 
+- **Maven 3.8+** 
+- **MongoDB Atlas** 
+- **Git** 
 - Un editor de código (recomendado: IntelliJ IDEA, VS Code)
 
 ### Verificar Instalaciones
@@ -151,7 +147,7 @@ cd recipe-management-api
    ```
    mongodb+srv://<username>:<password>@<cluster>.mongodb.net/recipedb?retryWrites=true&w=majority
    ```
-5. En **"Network Access"**, agrega tu IP o `0.0.0.0/0` para desarrollo
+5. En **"Network Access"**, agrega tu IP
 6. Editar `application.properties`
     ```properties
     # src/main/resources/application.properties
@@ -213,75 +209,92 @@ Abre tu navegador y ve a:
 ### 1. Registrar Receta de Televidente
 
 **Endpoint:** `POST /api/recipes/viewer`:  
+![alt text](image.png)
+![alt text](image-1.png)  
 
-![alt text](image.png)   
-
-![alt text](image-1.png) 
-
+**Ejemplo:**
 ![alt text](image-2.png)
+![alt text](image-3.png)
 ---
 
 ### 2. Registrar Receta de Participante
 
 **Endpoint:** `POST /api/recipes/contestant`
+![alt text](image-6.png)  
+![alt text](image-7.png)  
 
-
+**Ejemplo:**
+![alt text](image-4.png)  
+![alt text](image-5.png)  
 ---
 
 ### 3. Registrar Receta de Chef
 
 **Endpoint:** `POST /api/recipes/chef`
+![alt text](image-8.png)  
+![alt text](image-9.png)  
 
+**Ejemplo:**
+![alt text](image-10.png)  
+![alt text](image-11.png)  
 ---
 
 ### 4. Obtener Todas las Recetas
 
 **Endpoint:** `GET /api/recipes`
-
+![alt text](image-12.png)  
 ---
 
 ### 5. Obtener Receta por Número Consecutivo
 
 **Endpoint:** `GET /api/recipes/{consecutiveNumber}`
-
+![alt text](image-13.png)  
+![alt text](image-14.png)  
 ---
 
 ### 6. Obtener Recetas de Participantes
 
 **Endpoint:** `GET /api/recipes/contestant`
-
-
+![alt text](image-17.png)  
 ---
 
 ### 7. Obtener Recetas de Televidentes
 
 **Endpoint:** `GET /api/recipes/viewer`
-
+![alt text](image-16.png)  
 ---
 
 ### 8. Obtener Recetas de Chefs
 
 **Endpoint:** `GET /api/recipes/chef`
-
+![alt text](image-18.png)  
 ---
 
 ### 9. Obtener Recetas por Temporada
 
 **Endpoint:** `GET /api/recipes/season/{season}`
-
-
+![alt text](image-19.png)  
 ---
 
 ### 10. Buscar Recetas por Ingrediente
 
 **Endpoint:** `GET /api/recipes/search?ingredient={ingrediente}`
+![alt text](image-20.png)
+---
 
+### 11. Actualizar Receta
+
+**Endpoint:** `PUT /api/recipes/{consecutiveNumber}`
+![alt text](image-21.png)  
+![alt text](image-22.png)  
+![alt text](image-23.png)  
 ---
 
 ### 12. Eliminar Receta
 
 **Endpoint:** `DELETE /api/recipes/{consecutiveNumber}`
-
+![alt text](image-24.png)  
+![alt text](image-25.png)
 ---
 
 ## Documentación Swagger
@@ -316,6 +329,142 @@ http://localhost:8080/swagger-ui.html
 ---
 
 ## Testing
+
+### Test requeridos:
+
+-Validar que se pueda registrar una receta
+
+```
+    @Test
+    @DisplayName("Should register viewer recipe successfully")
+    void shouldRegisterViewerRecipeSuccessfully() throws Exception {
+        // Given
+        when(recipeService.registerViewerRecipe(any(ViewerRecipeRequestDto.class))).thenReturn(mockRecipe);
+
+        // When & Then
+        mockMvc.perform(post("/api/recipes/viewer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(viewerRecipeRequestDto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is("12345")))
+                .andExpect(jsonPath("$.title", is("Test Recipe")))
+                .andExpect(jsonPath("$.chefName", is("Test Chef")))
+                .andExpect(jsonPath("$.recipeType", is("VIEWER")))
+                .andExpect(jsonPath("$.consecutiveNumber", is(1)));
+
+        verify(recipeService).registerViewerRecipe(any(ViewerRecipeRequestDto.class));
+    }
+
+    @Test
+    @DisplayName("Should register contestant recipe successfully")
+    void shouldRegisterContestantRecipeSuccessfully() throws Exception {
+        // Given
+        mockRecipe.setRecipeType("CONTESTANT");
+        mockRecipe.setSeason(3);
+        when(recipeService.registerContestantRecipe(any(ContestantRecipeRequestDto.class))).thenReturn(mockRecipe);
+
+        // When & Then
+        mockMvc.perform(post("/api/recipes/contestant")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(contestantRecipeRequestDto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is("12345")))
+                .andExpect(jsonPath("$.recipeType", is("CONTESTANT")))
+                .andExpect(jsonPath("$.season", is(3)));
+
+        verify(recipeService).registerContestantRecipe(any(ContestantRecipeRequestDto.class));
+    }
+
+    @Test
+    @DisplayName("Should register chef recipe successfully")
+    void shouldRegisterChefRecipeSuccessfully() throws Exception {
+        // Given
+        mockRecipe.setRecipeType("CHEF");
+        when(recipeService.registerChefRecipe(any(ChefRecipeRequestDto.class))).thenReturn(mockRecipe);
+
+        // When & Then
+        mockMvc.perform(post("/api/recipes/chef")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(chefRecipeRequestDto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is("12345")))
+                .andExpect(jsonPath("$.recipeType", is("CHEF")));
+
+        verify(recipeService).registerChefRecipe(any(ChefRecipeRequestDto.class));
+    }
+
+    @Test
+    @DisplayName("Should return bad request when viewer recipe has invalid data")
+    void shouldReturnBadRequestWhenViewerRecipeHasInvalidData() throws Exception {
+        // Given
+        viewerRecipeRequestDto.setTitle(""); // Invalid title
+        viewerRecipeRequestDto.setIngredients(Collections.emptyList()); // Invalid ingredients
+
+        // When & Then
+        mockMvc.perform(post("/api/recipes/viewer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(viewerRecipeRequestDto)))
+                .andExpect(status().isBadRequest());
+
+        verify(recipeService, never()).registerViewerRecipe(any());
+    }
+```
+
+
+-Validar que la búsqueda por ingrediente devuelva resultados correctos
+```
+    @Test
+    @DisplayName("Should search recipes by ingredient successfully")
+    void shouldSearchRecipesByIngredientSuccessfully() throws Exception {
+        // Given
+        String ingredient = "tomate";
+        List<Recipe> foundRecipes = Arrays.asList(mockRecipe, new Recipe());
+        when(recipeService.searchRecipesByIngredient(ingredient)).thenReturn(foundRecipes);
+
+        // When & Then
+        mockMvc.perform(get("/api/recipes/search")
+                .param("ingredient", ingredient))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is("12345")));
+
+        verify(recipeService).searchRecipesByIngredient(ingredient);
+    }
+
+    @Test
+    @DisplayName("Should return 404 when no recipes found by ingredient")
+    void shouldReturn404WhenNoRecipesFoundByIngredient() throws Exception {
+        // Given
+        String ingredient = "ingrediente-inexistente";
+        when(recipeService.searchRecipesByIngredient(ingredient))
+            .thenThrow(new MasterChefException("No se encontraron recetas con el ingrediente: " + ingredient));
+
+        // When & Then
+        mockMvc.perform(get("/api/recipes/search")
+                .param("ingredient", ingredient))
+                .andExpect(status().isNotFound());
+
+        verify(recipeService).searchRecipesByIngredient(ingredient);
+    }
+```
+
+-Validar que se devuelva error si se consulta una receta inexistente
+```
+    @DisplayName("Should return 404 when recipe not found by consecutive number")
+    void shouldReturn404WhenRecipeNotFoundByConsecutiveNumber() throws Exception {
+        // Given
+        Long consecutiveNumber = 999L;
+        when(recipeService.getRecipeByConsecutiveNumber(consecutiveNumber))
+            .thenThrow(new MasterChefException("No se encontró la receta con número consecutivo: " + consecutiveNumber));
+
+        // When & Then
+        mockMvc.perform(get("/api/recipes/{consecutiveNumber}", consecutiveNumber))
+                .andExpect(status().isNotFound());
+
+        verify(recipeService).getRecipeByConsecutiveNumber(consecutiveNumber);
+    }
+```
+
 
 ### Ejecutar Tests
 

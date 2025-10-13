@@ -234,7 +234,7 @@ Abre tu navegador y ve a:
 ![alt text](image-8.png)  
 ![alt text](image-9.png)  
 
-**Ejemplo:**
+**Ejemplo:**  
 ![alt text](image-10.png)  
 ![alt text](image-11.png)  
 ---
@@ -299,20 +299,16 @@ Abre tu navegador y ve a:
 
 ## Documentación Swagger
 
-### Swagger UI en Producción (Azure)
+### Swagger UI en Azure
 
-La API cuenta con documentación interactiva Swagger desplegada en Azure:
+La API cuenta con documentación Swagger desplegada en Azure:
 
-**Swagger UI (Producción):**
+**Swagger UI (Azure):**
 ```
 https://recipe-api-doswcompany-encfd2f4ekbyhrhv.canadacentral-01.azurewebsites.net/swagger-ui/index.html
 ```
 
-### Swagger UI Local
-
-Durante el desarrollo local, puedes acceder a Swagger en:
-
-**Local Swagger UI:**
+**Swagger UI (Local):**
 ```
 http://localhost:8080/swagger-ui.html
 ```
@@ -332,7 +328,7 @@ http://localhost:8080/swagger-ui.html
 
 ### Test requeridos:
 
--Validar que se pueda registrar una receta
+- Validar que se pueda registrar una receta
 
 ```
     @Test
@@ -411,7 +407,7 @@ http://localhost:8080/swagger-ui.html
 ```
 
 
--Validar que la búsqueda por ingrediente devuelva resultados correctos
+- Validar que la búsqueda por ingrediente devuelva resultados correctos
 ```
     @Test
     @DisplayName("Should search recipes by ingredient successfully")
@@ -448,7 +444,7 @@ http://localhost:8080/swagger-ui.html
     }
 ```
 
--Validar que se devuelva error si se consulta una receta inexistente
+- Validar que se devuelva error si se consulta una receta inexistente
 ```
     @DisplayName("Should return 404 when recipe not found by consecutive number")
     void shouldReturn404WhenRecipeNotFoundByConsecutiveNumber() throws Exception {

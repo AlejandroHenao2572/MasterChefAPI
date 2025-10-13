@@ -485,7 +485,7 @@ open target/site/jacoco/index.html
 
 ### GitHub Actions Workflows
 
-El proyecto incluye dos workflows de CI/CD:
+El proyecto incluye dos workflows de CI/CD:  
 
 #### 1. Workflow de Desarrollo (`ci.yml`)
 

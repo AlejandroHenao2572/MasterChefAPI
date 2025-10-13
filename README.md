@@ -35,7 +35,7 @@ API REST para la gestión de recetas de cocina desarrollada para el programa Mas
 - **Participantes**: Registrar recetas del programa con información de temporada
 - **Chefs jurados**: Publicar recetas profesionales
 
-### Contexto de Negocio
+### Contexto
 
 Un importante programa de telerrealidad de cocina necesita un sitio web donde los espectadores puedan:
 - Consultar recetas que han aparecido en las temporadas del programa
@@ -209,92 +209,92 @@ Abre tu navegador y ve a:
 ### 1. Registrar Receta de Televidente
 
 **Endpoint:** `POST /api/recipes/viewer`:  
-![alt text](image.png)
-![alt text](image-1.png)  
+![alt text](images/image-1.png)
+![alt text](images/image-1.png)  
 
 **Ejemplo:**
-![alt text](image-2.png)
-![alt text](image-3.png)
+![alt text](images/image-2.png)
+![alt text](images/image-3.png)
 ---
 
 ### 2. Registrar Receta de Participante
 
 **Endpoint:** `POST /api/recipes/contestant`
-![alt text](image-6.png)  
-![alt text](image-7.png)  
+![alt text](images/image-6.png)  
+![alt text](images/image-7.png)  
 
 **Ejemplo:**
-![alt text](image-4.png)  
-![alt text](image-5.png)  
+![alt text](images/image-4.png)  
+![alt text](images/image-5.png)  
 ---
 
 ### 3. Registrar Receta de Chef
 
 **Endpoint:** `POST /api/recipes/chef`
-![alt text](image-8.png)  
-![alt text](image-9.png)  
+![alt text](images/image-8.png)  
+![alt text](images/image-9.png)  
 
 **Ejemplo:**  
-![alt text](image-10.png)  
-![alt text](image-11.png)  
+![alt text](images/image-10.png)  
+![alt text](images/image-11.png)  
 ---
 
 ### 4. Obtener Todas las Recetas
 
 **Endpoint:** `GET /api/recipes`
-![alt text](image-12.png)  
+![alt text](images/image-12.png)  
 ---
 
 ### 5. Obtener Receta por Número Consecutivo
 
 **Endpoint:** `GET /api/recipes/{consecutiveNumber}`
-![alt text](image-13.png)  
-![alt text](image-14.png)  
+![alt text](images/image-13.png)  
+![alt text](images/image-14.png)  
 ---
 
 ### 6. Obtener Recetas de Participantes
 
 **Endpoint:** `GET /api/recipes/contestant`
-![alt text](image-17.png)  
+![alt text](images/image-17.png)  
 ---
 
 ### 7. Obtener Recetas de Televidentes
 
 **Endpoint:** `GET /api/recipes/viewer`
-![alt text](image-16.png)  
+![alt text](images/image-16.png)  
 ---
 
 ### 8. Obtener Recetas de Chefs
 
 **Endpoint:** `GET /api/recipes/chef`
-![alt text](image-18.png)  
+![alt text](images/image-18.png)  
 ---
 
 ### 9. Obtener Recetas por Temporada
 
 **Endpoint:** `GET /api/recipes/season/{season}`
-![alt text](image-19.png)  
+![alt text](images/image-19.png)  
 ---
 
 ### 10. Buscar Recetas por Ingrediente
 
 **Endpoint:** `GET /api/recipes/search?ingredient={ingrediente}`
-![alt text](image-20.png)
+![alt text](images/image-20.png)
 ---
 
 ### 11. Actualizar Receta
 
 **Endpoint:** `PUT /api/recipes/{consecutiveNumber}`
-![alt text](image-21.png)  
-![alt text](image-22.png)  
-![alt text](image-23.png)  
+![alt text](images/image-21.png)  
+![alt text](images/image-22.png)  
+![alt text](images/image-23.png)  
 ---
 
 ### 12. Eliminar Receta
 
 **Endpoint:** `DELETE /api/recipes/{consecutiveNumber}`
-![alt text](image-24.png)  
-![alt text](image-25.png)
+![alt text](images/image-24.png)  
+![alt text](images/image-25.png)
 ---
 
 ## Documentación Swagger

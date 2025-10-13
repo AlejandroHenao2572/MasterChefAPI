@@ -487,7 +487,7 @@ open target/site/jacoco/index.html
 
 El proyecto incluye dos workflows de CI/CD:
 
-#### 1. Workflow de Desarrollo (`ci-cd.yml`)
+#### 1. Workflow de Desarrollo (`ci.yml`)
 
 **Trigger:** Push o Pull Request a la rama `develop`
 
@@ -496,7 +496,7 @@ El proyecto incluye dos workflows de CI/CD:
 - Valida que el código compile
 
 ```yaml
-# Ubicación: .github/workflows/ci-cd.yml
+# Ubicación: .github/workflows/ci.yml
 # Se ejecuta en: push/PR a develop
 ```
 
